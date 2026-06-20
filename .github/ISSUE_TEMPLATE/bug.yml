@@ -1,0 +1,36 @@
+---
+name: Bug
+about: Report a crash, broken flow, bad catalog result, or UI issue
+title: "[Bug]: "
+labels: bug
+assignees: []
+---
+
+**What happened**
+
+Describe the problem and what you were doing when it happened.
+
+**What you expected**
+
+Describe the behavior you expected instead.
+
+**Steps**
+
+1.
+2.
+3.
+
+**Catalog/search details**
+
+Query:
+Provider, if known:
+Language:
+
+**Screenshots**
+
+Attach screenshots or screen recordings if they help.
+
+**OS and Quietfolio version**
+
+OS:
+Quietfolio:

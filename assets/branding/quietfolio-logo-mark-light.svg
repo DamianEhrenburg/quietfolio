@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" role="img">
+  <title>Quietfolio monochrome light mark</title>
+  <path fill="#F4EEFF" fill-rule="evenodd" d="M512 150 C350 150 230 278 230 440 V600 C230 774 350 870 512 870 C674 870 794 774 794 600 V440 C794 278 674 150 512 150 Z M512 260 C414 260 340 340 340 448 V588 C340 696 414 760 512 760 C610 760 684 696 684 588 V448 C684 340 610 260 512 260 Z"/>
+  <path fill="#F4EEFF" d="M477 676 C548 679 590 704 630 749 C671 796 716 832 819 832 C742 852 677 849 633 818 C582 782 556 711 477 676 Z"/>
+</svg>

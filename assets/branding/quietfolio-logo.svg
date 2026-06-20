@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" role="img" aria-labelledby="title desc">
+  <title id="title">Quietfolio app icon</title>
+  <desc id="desc">A clean violet letter Q shaped like a book spine, with a turning page forming its tail, on a dark rounded-square background.</desc>
+
+  <defs>
+    <linearGradient id="bg" x1="110" y1="70" x2="900" y2="950" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#1b1b3a"/>
+      <stop offset="0.52" stop-color="#11142d"/>
+      <stop offset="1" stop-color="#0b0d20"/>
+    </linearGradient>
+
+    <radialGradient id="bgGlow" cx="50%" cy="36%" r="72%">
+      <stop offset="0" stop-color="#7060df" stop-opacity="0.10"/>
+      <stop offset="0.62" stop-color="#5144b7" stop-opacity="0.025"/>
+      <stop offset="1" stop-color="#000000" stop-opacity="0"/>
+    </radialGradient>
+
+    <linearGradient id="qGradient" x1="360" y1="170" x2="650" y2="865" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#d9bcff"/>
+      <stop offset="0.42" stop-color="#ad86ff"/>
+      <stop offset="1" stop-color="#6f43ef"/>
+    </linearGradient>
+
+    <linearGradient id="pageTop" x1="540" y1="675" x2="760" y2="845" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#e2c8ff"/>
+      <stop offset="0.48" stop-color="#c59bff"/>
+      <stop offset="1" stop-color="#9b6df7"/>
+    </linearGradient>
+
+    <linearGradient id="pageUnder" x1="500" y1="700" x2="760" y2="865" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#4930ad"/>
+      <stop offset="0.58" stop-color="#6c46df"/>
+      <stop offset="1" stop-color="#8b62f2"/>
+    </linearGradient>
+
+    <clipPath id="iconClip">
+      <rect x="16" y="16" width="992" height="992" rx="170"/>
+    </clipPath>
+  </defs>
+
+  <g clip-path="url(#iconClip)">
+    <rect x="16" y="16" width="992" height="992" rx="170" fill="url(#bg)"/>
+    <rect x="16" y="16" width="992" height="992" rx="170" fill="url(#bgGlow)"/>
+  </g>
+
+  <rect x="17" y="17" width="990" height="990" rx="169" fill="none" stroke="#7565d8" stroke-opacity="0.14" stroke-width="2"/>
+
+  <g>
+    <!-- Main Q: one controlled compound vector shape. -->
+    <path fill="url(#qGradient)" fill-rule="evenodd" d="
+      M512 150
+      C350 150 230 278 230 440
+      V600
+      C230 774 350 870 512 870
+      C674 870 794 774 794 600
+      V440
+      C794 278 674 150 512 150
+      Z
+
+      M512 260
+      C414 260 340 340 340 448
+      V588
+      C340 696 414 760 512 760
+      C610 760 684 696 684 588
+      V448
+      C684 340 610 260 512 260
+      Z"/>
+
+    <!-- Book-spine bands cut into the left side of the Q. -->
+    <path d="M231 466 C274 442 314 442 340 458" fill="none" stroke="#10132b" stroke-width="9" stroke-linecap="round"/>
+    <path d="M231 500 C274 476 314 476 340 492" fill="none" stroke="#10132b" stroke-width="9" stroke-linecap="round"/>
+  </g>
+
+  <!-- Lower page: darker layer keeps the book metaphor readable at small sizes. -->
+  <path fill="url(#pageUnder)" d="
+    M477 676
+    C542 688 564 748 604 810
+    C648 878 731 884 819 832
+    C744 826 701 802 659 757
+    C612 706 556 676 477 676
+    Z"/>
+
+  <!-- Top turning page. -->
+  <path fill="url(#pageTop)" d="
+    M477 676
+    C548 679 590 704 630 749
+    C671 796 716 832 819 832
+    C742 852 677 849 633 818
+    C582 782 556 711 477 676
+    Z"/>
+
+  <!-- Crisp fold highlight, deliberately simple rather than photorealistic. -->
+  <path d="M491 684 C548 710 573 773 628 811 C673 843 735 844 798 833"
+        fill="none" stroke="#f0e2ff" stroke-opacity="0.70" stroke-width="5" stroke-linecap="round"/>
+</svg>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" role="img" aria-labelledby="title desc">
+  <title id="title">Quietfolio compact app icon</title>
+  <desc id="desc">A compact violet Q with a page-shaped tail on a dark rounded-square background, optimized for small sizes.</desc>
+  <defs>
+    <linearGradient id="bg" x1="120" y1="70" x2="900" y2="950" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#1b1b3a"/>
+      <stop offset="0.55" stop-color="#11142d"/>
+      <stop offset="1" stop-color="#0b0d20"/>
+    </linearGradient>
+    <linearGradient id="q" x1="340" y1="165" x2="660" y2="875" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#d9bcff"/>
+      <stop offset="0.46" stop-color="#a981ff"/>
+      <stop offset="1" stop-color="#6c42ee"/>
+    </linearGradient>
+    <linearGradient id="page" x1="510" y1="690" x2="810" y2="850" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#dfc5ff"/>
+      <stop offset="1" stop-color="#9768f4"/>
+    </linearGradient>
+    <clipPath id="clip"><rect x="16" y="16" width="992" height="992" rx="170"/></clipPath>
+  </defs>
+  <g clip-path="url(#clip)">
+    <rect x="16" y="16" width="992" height="992" rx="170" fill="url(#bg)"/>
+  </g>
+  <path fill="url(#q)" fill-rule="evenodd" d="
+    M512 144 C342 144 218 278 218 448 V596 C218 780 342 880 512 880 C682 880 806 780 806 596 V448 C806 278 682 144 512 144 Z
+    M512 270 C412 270 344 348 344 454 V586 C344 692 412 754 512 754 C612 754 680 692 680 586 V454 C680 348 612 270 512 270 Z"/>
+  <path fill="#5130bf" d="M493 676 C550 692 574 748 612 805 C658 874 734 877 820 831 C744 826 704 802 662 758 C616 709 561 681 493 676 Z"/>
+  <path fill="url(#page)" d="M493 676 C552 679 592 704 632 748 C675 796 720 829 820 831 C746 853 684 849 638 818 C590 786 562 718 493 676 Z"/>
+</svg>
