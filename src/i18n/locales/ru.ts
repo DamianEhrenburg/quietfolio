@@ -10,23 +10,20 @@ export const ruMessages: Messages = {
   language: {
     welcomeEyebrow: "Добро пожаловать в Quietfolio",
     welcomeTitle: "Выберите язык интерфейса",
-    welcomeSubtitle: "Язык можно сменить в настройках.",
     russian: "Русский",
     russianHint: "Интерфейс и подписи на русском",
     english: "English",
     englishHint: "Интерфейс на английском",
     continue: "Продолжить",
     interface: "Язык интерфейса",
-    interfaceHint: "Меню, подписи и уведомления. Поиск изданий настраивается отдельно.",
-    welcomePreview: "Так будет выглядеть",
-    welcomePickHint: "Выберите язык для предпросмотра.",
     saving: "Сохраняю…"
   },
   status: {
-    want: "Хочу прочитать",
+    want: "В планах",
     reading: "Читаю",
     read: "Прочитано",
-    paused: "Отложено"
+    paused: "Отложено",
+    abandoned: "Брошено"
   },
   sources: {
     local: "Вручную",

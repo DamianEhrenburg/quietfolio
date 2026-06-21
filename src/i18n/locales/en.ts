@@ -10,23 +10,20 @@ export const enMessages: Messages = {
   language: {
     welcomeEyebrow: "Welcome to Quietfolio",
     welcomeTitle: "Choose your interface language",
-    welcomeSubtitle: "Change anytime in Settings.",
     russian: "Русский",
     russianHint: "Interface and labels in Russian",
     english: "English",
     englishHint: "Interface and labels in English",
     continue: "Continue",
     interface: "Interface language",
-    interfaceHint: "Menus, labels, and notifications. Edition search is configured separately.",
-    welcomePreview: "App preview",
-    welcomePickHint: "Pick a language to preview.",
     saving: "Saving…"
   },
   status: {
-    want: "Want to read",
+    want: "Planned",
     reading: "Reading",
     read: "Finished",
-    paused: "On hold"
+    paused: "On hold",
+    abandoned: "Abandoned"
   },
   sources: {
     local: "Added manually",

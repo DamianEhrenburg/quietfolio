@@ -15,16 +15,12 @@ export interface Messages {
   language: {
     welcomeEyebrow: string;
     welcomeTitle: string;
-    welcomeSubtitle: string;
     russian: string;
     russianHint: string;
     english: string;
     englishHint: string;
     continue: string;
     interface: string;
-    interfaceHint: string;
-    welcomePreview: string;
-    welcomePickHint: string;
     saving: string;
   };
   status: Record<ReadingStatus, string>;

@@ -181,7 +181,8 @@ const readingStatusOptions = [
   { value: "want" as const, Icon: Sparkles },
   { value: "reading" as const, Icon: BookMarked },
   { value: "read" as const, Icon: CircleCheck },
-  { value: "paused" as const, Icon: Clock3 }
+  { value: "paused" as const, Icon: Clock3 },
+  { value: "abandoned" as const, Icon: CircleX }
 ];
 
 const emptyBookInput: BookInput = {
@@ -247,7 +248,7 @@ type EditorState =
 type WorkspaceMode = "home" | "library" | "online";
 type LibraryFilter = "all" | "favorites" | ReadingStatus;
 
-const libraryFilterOptions: LibraryFilter[] = ["all", "favorites", "reading", "want", "read", "paused"];
+const libraryFilterOptions: LibraryFilter[] = ["all", "favorites", "reading", "want", "read", "paused", "abandoned"];
 
 function getApi() {
   if (!window.quietfolio) throw new Error("Desktop API unavailable");
@@ -322,7 +323,7 @@ function filterChipClass(active: LibraryFilter, filter: LibraryFilter) {
   const classes = ["filter-chip"];
   if (active === filter) classes.push("selected");
   if (filter === "favorites") classes.push("filter-favorites");
-  if (filter === "reading") classes.push("filter-reading");
+  if (filter !== "all" && filter !== "favorites") classes.push(`filter-${filter}`);
   return classes.join(" ");
 }
 
@@ -1576,6 +1577,7 @@ function AppShell({
     reading: books.filter((book) => book.status === "reading").length,
     want: books.filter((book) => book.status === "want").length,
     paused: books.filter((book) => book.status === "paused").length,
+    abandoned: books.filter((book) => book.status === "abandoned").length,
     favorites: books.filter((book) => book.favorite).length,
     reviewed: books.filter((book) => book.hasReview).length
   }), [books]);
@@ -2236,9 +2238,10 @@ function AppShell({
             <button className={libraryFilter === "all" ? "nav-item active" : "nav-item"} onClick={() => { setLibrarySort("title"); setLibraryFilter("all"); }}><LibraryBig size={19} /><span className="nav-item-label">{m.nav.allBooks}</span><span className="nav-item-count">{stats.total}</span></button>
             <button className={libraryFilter === "favorites" ? "nav-item active nav-favorites" : "nav-item nav-favorites"} onClick={openLibraryFavorites}><Star size={19} /><span className="nav-item-label">{m.nav.favorites}</span><span className="nav-item-count">{stats.favorites}</span></button>
             <button className={libraryFilter === "reading" ? "nav-item active nav-reading" : "nav-item nav-reading"} onClick={() => { setLibrarySort("title"); setLibraryFilter("reading"); }}><BookMarked size={19} /><span className="nav-item-label">{m.status.reading}</span><span className="nav-item-count">{stats.reading}</span></button>
-            <button className={libraryFilter === "want" ? "nav-item active" : "nav-item"} onClick={() => { setLibrarySort("title"); setLibraryFilter("want"); }}><Sparkles size={19} /><span className="nav-item-label">{m.status.want}</span><span className="nav-item-count">{stats.want}</span></button>
-            <button className={libraryFilter === "read" ? "nav-item active" : "nav-item"} onClick={() => { setLibrarySort("title"); setLibraryFilter("read"); }}><CircleCheck size={19} /><span className="nav-item-label">{m.status.read}</span><span className="nav-item-count">{stats.read}</span></button>
-            <button className={libraryFilter === "paused" ? "nav-item active" : "nav-item"} onClick={() => { setLibrarySort("title"); setLibraryFilter("paused"); }}><Clock3 size={19} /><span className="nav-item-label">{m.status.paused}</span><span className="nav-item-count">{stats.paused}</span></button>
+            <button className={libraryFilter === "want" ? "nav-item active nav-want" : "nav-item nav-want"} onClick={() => { setLibrarySort("title"); setLibraryFilter("want"); }}><Sparkles size={19} /><span className="nav-item-label">{m.status.want}</span><span className="nav-item-count">{stats.want}</span></button>
+            <button className={libraryFilter === "read" ? "nav-item active nav-read" : "nav-item nav-read"} onClick={() => { setLibrarySort("title"); setLibraryFilter("read"); }}><CircleCheck size={19} /><span className="nav-item-label">{m.status.read}</span><span className="nav-item-count">{stats.read}</span></button>
+            <button className={libraryFilter === "paused" ? "nav-item active nav-paused" : "nav-item nav-paused"} onClick={() => { setLibrarySort("title"); setLibraryFilter("paused"); }}><Clock3 size={19} /><span className="nav-item-label">{m.status.paused}</span><span className="nav-item-count">{stats.paused}</span></button>
+            <button className={libraryFilter === "abandoned" ? "nav-item active nav-abandoned" : "nav-item nav-abandoned"} onClick={() => { setLibrarySort("title"); setLibraryFilter("abandoned"); }}><CircleX size={19} /><span className="nav-item-label">{m.status.abandoned}</span><span className="nav-item-count">{stats.abandoned}</span></button>
           </>}
           {mode === "online" && <>
             <button className="nav-item active"><Compass size={19} /><span className="nav-item-label">{m.nav.bookSearch}</span></button>
@@ -2344,18 +2347,9 @@ function AppShell({
                     <div className="book-card-cover-wrap">
                       <button type="button" className="book-card-open" onClick={() => selectLibraryBook(book.id)}>
                         <div className="cover">
-                          <CoverImage src={book.coverUrl} title={book.displayTitle} fit="cover" genre={book.genres[0] || book.category} />
-                          <div className="cover-overlay"><span className="cover-open-btn"><BookOpen size={18} /></span></div>
+                          <CoverImage src={book.coverUrl} title={book.displayTitle} fit="cover" status={book.status} genre={book.genres[0] || book.category} />
                         </div>
                       </button>
-                      <StatusSwitcher
-                        className="cover-status-switcher"
-                        compact
-                        iconsOnly
-                        value={book.status}
-                        saving={statusSavingId === book.id}
-                        onChange={(status) => void handleUpdateStatus(book, status)}
-                      />
                     </div>
                     <button type="button" className="book-card-meta" onClick={() => selectLibraryBook(book.id)}>
                       <div className="book-card-body">

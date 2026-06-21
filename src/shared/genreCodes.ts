@@ -71,12 +71,25 @@ export const SUBJECT_ALIASES: Record<string, GenreCode> = {
   "western stories": "fiction",
   dystopian: "fiction",
   classics: "classics",
+  classic: "classics",
+  "classic literature": "classics",
+  "classical literature": "classics",
+  "children's literature": "children",
+  "childrens literature": "children",
+  "juvenile fiction": "children",
+  "juvenile literature": "children",
+  "science fiction": "science_fiction",
+  "sci-fi": "science_fiction",
+  scifi: "science_fiction",
+  "speculative fiction": "science_fiction",
   philosophy: "philosophy",
   psychology: "psychology",
   science: "science",
   history: "history",
   poetry: "poetry",
-  drama: "drama"
+  drama: "drama",
+  dramatic: "drama",
+  dramaturgy: "drama"
 };
 
 export function resolveGenreCode(value: string): GenreCode | null {

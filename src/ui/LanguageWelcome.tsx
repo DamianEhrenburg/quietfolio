@@ -11,19 +11,13 @@ interface LanguageWelcomeProps {
 const localeOptions = [
   {
     id: "en" as const,
-    glyph: "Aa",
-    name: enMessages.language.english,
-    hint: enMessages.language.englishHint
+    name: enMessages.language.english
   },
   {
     id: "ru" as const,
-    glyph: "Яа",
-    name: ruMessages.language.russian,
-    hint: ruMessages.language.russianHint
+    name: ruMessages.language.russian
   }
 ] as const;
-
-const previewStatuses = ["want", "reading", "read"] as const;
 
 export function LanguageWelcome({ onChoose }: LanguageWelcomeProps) {
   const [selected, setSelected] = useState<UiLocale | null>(null);
@@ -66,7 +60,7 @@ export function LanguageWelcome({ onChoose }: LanguageWelcomeProps) {
         aria-labelledby="language-welcome-title"
         aria-busy={saving}
       >
-        <header className="language-welcome-top">
+        <header className="language-welcome-top minimal">
           <div className="language-welcome-intro" key={`intro-${previewLocale}`}>
             <div className="language-welcome-brand">
               <span className="language-welcome-mark">
@@ -79,13 +73,6 @@ export function LanguageWelcome({ onChoose }: LanguageWelcomeProps) {
             </div>
             <span className="eyebrow">{preview.language.welcomeEyebrow}</span>
             <h1 id="language-welcome-title">{preview.language.welcomeTitle}</h1>
-            <p className="language-welcome-lead">{preview.language.welcomeSubtitle}</p>
-          </div>
-
-          <div className="language-welcome-books" aria-hidden="true">
-            <span className="language-welcome-book language-welcome-book-1" />
-            <span className="language-welcome-book language-welcome-book-2" />
-            <span className="language-welcome-book language-welcome-book-3" />
           </div>
         </header>
 
@@ -102,10 +89,8 @@ export function LanguageWelcome({ onChoose }: LanguageWelcomeProps) {
                 className={isSelected ? "language-locale-tile selected" : "language-locale-tile"}
                 onClick={() => setSelected(option.id)}
               >
-                <span className="language-locale-glyph">{option.glyph}</span>
                 <div className="language-locale-copy">
                   <strong>{option.name}</strong>
-                  <span>{option.hint}</span>
                 </div>
                 <span className="language-locale-check" aria-hidden="true">
                   {isSelected ? <Check size={18} /> : null}
@@ -114,29 +99,6 @@ export function LanguageWelcome({ onChoose }: LanguageWelcomeProps) {
             );
           })}
         </div>
-
-        <section className="language-welcome-preview" key={`preview-${previewLocale}`} aria-label={preview.language.welcomePreview}>
-          <span className="language-preview-eyebrow">{preview.language.welcomePreview}</span>
-          <div className="language-preview-rail">
-            <span>{preview.nav.home}</span>
-            <span className="active">{preview.nav.library}</span>
-            <span>{preview.nav.online}</span>
-            <span>{preview.nav.settings}</span>
-          </div>
-          <div className="language-preview-chips">
-            <span className="language-preview-chip status-favorites">{preview.nav.favorites}</span>
-            {previewStatuses.map((status) => (
-              <span key={status} className={`language-preview-chip status-${status}`}>
-                {preview.status[status]}
-              </span>
-            ))}
-          </div>
-          <div className="language-preview-search">{preview.library.searchPlaceholder}</div>
-        </section>
-
-        <p className="language-welcome-note visible">
-          {selected ? preview.language.interfaceHint : enMessages.language.welcomePickHint}
-        </p>
 
         <footer className="language-welcome-footer">
           <button

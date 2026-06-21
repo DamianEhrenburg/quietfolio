@@ -1,4 +1,4 @@
-export type ReadingStatus = "want" | "reading" | "read" | "paused";
+export type ReadingStatus = "want" | "reading" | "read" | "paused" | "abandoned";
 
 export type OnlineSearchMode = "auto" | "author" | "title" | "isbn";
 export type ResolvedSearchMode = "author" | "title" | "isbn" | "general";
