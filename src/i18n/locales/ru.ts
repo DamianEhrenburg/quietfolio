@@ -34,10 +34,7 @@ export const ruMessages: Messages = {
     "open-library": "Open Library",
     fantlab: "FantLab",
     gutendex: "Gutenberg",
-    hardcover: "Hardcover",
-    inventaire: "Open Library",
-    litres: "Open Library",
-    demo: "Демо"
+    hardcover: "Hardcover"
   },
   searchMode: {
     auto: "Авто",

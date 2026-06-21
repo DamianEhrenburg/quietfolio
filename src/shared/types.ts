@@ -14,13 +14,12 @@ export type DisplayTitlePreference = "localized" | "edition";
 
 export type BookProvider = "open-library" | "google-books" | "fantlab" | "gutendex" | "hardcover";
 export type DiagnosticProvider = BookProvider | "wikidata";
-export type BookSource = "local" | BookProvider | "demo" | "inventaire" | "litres";
+export type BookSource = "local" | BookProvider;
 export type ReferenceKind = "work" | "edition" | "volume";
 export type CoverSource =
   | "edition"
   | "isbn"
   | "google-books"
-  | "inventaire"
   | "same-language-edition"
   | "work"
   | "manual"

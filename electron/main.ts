@@ -24,7 +24,6 @@ import {
   listBooks,
   updateBook
 } from "./services/libraryRepository";
-import { seedDemoLibrary } from "./services/demoLibrary";
 import {
   clearResolvePreviewCache,
   diagnoseProviders,
@@ -175,12 +174,6 @@ app.whenReady().then(() => {
     updateBook(requireBookId(id), await prepareBookInput(input))
   );
   ipcMain.handle("library:deleteBook", (_event, id: unknown) => deleteBook(requireBookId(id)));
-  ipcMain.handle("library:seedDemo", (_event, value: unknown) => {
-    const replace = value === undefined || value === null
-      ? true
-      : typeof value === "object" && !Array.isArray(value) && (value as { replace?: boolean }).replace !== false;
-    return seedDemoLibrary(replace);
-  });
   ipcMain.handle("library:getInfo", () => getLibraryInfo());
   ipcMain.handle("library:searchOnline", (_event, value: unknown) => {
     if (typeof value === "string") return searchOnlineBooks(value);
@@ -259,13 +252,6 @@ app.whenReady().then(() => {
     getLibraryInfo();
   } catch (error) {
     console.error("Failed to initialize the library database", error);
-  }
-
-  if (process.argv.includes("--seed-demo")) {
-    const books = seedDemoLibrary(true);
-    console.log(`Seeded ${books.length} demo books to ${getLibraryInfo().databasePath}`);
-    app.quit();
-    return;
   }
 
   if (process.argv.includes("--bench-search")) {

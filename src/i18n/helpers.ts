@@ -135,7 +135,6 @@ export function coverStatusLabel(
   if (book.coverStatus === "download-failed") return m.cover.downloadFailed;
   if (book.coverStatus === "missing" || book.coverSource === "none") return m.cover.missing;
   if (book.coverSource === "manual") return m.cover.manual;
-  if (book.coverSource === "inventaire") return m.cover.externalCatalog;
   if (book.coverSource === "google-books") return m.cover.googleBooksIsbn;
   if (book.coverSource === "isbn") return m.cover.openLibraryIsbn;
   if (book.coverSource === "same-language-edition") return m.cover.sameLanguageEdition;

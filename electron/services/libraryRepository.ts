@@ -52,9 +52,9 @@ interface BookRow {
 }
 
 const VALID_STATUSES = new Set<ReadingStatus>(["want", "reading", "read", "paused"]);
-const VALID_SOURCES = new Set<BookSource>(["local", "google-books", "open-library", "fantlab", "gutendex", "hardcover", "demo", "inventaire", "litres"]);
+const VALID_SOURCES = new Set<BookSource>(["local", "google-books", "open-library", "fantlab", "gutendex", "hardcover"]);
 const VALID_COVER_SOURCES = new Set<CoverSource>([
-  "edition", "isbn", "google-books", "inventaire", "same-language-edition", "work", "manual", "none"
+  "edition", "isbn", "google-books", "same-language-edition", "work", "manual", "none"
 ]);
 const VALID_COVER_STATUSES = new Set<CoverStatus>([
   "local", "remote", "fallback", "missing", "download-failed"
@@ -200,8 +200,8 @@ function initializeSchema(db: Database.Database) {
           genres_json = COALESCE(NULLIF(TRIM(genres_json), ''), '[]'),
           subjects_json = COALESCE(NULLIF(TRIM(subjects_json), ''), '[]'),
           status = CASE WHEN status IN ('want', 'reading', 'read', 'paused') THEN status ELSE 'want' END,
-          source = CASE WHEN source IN ('litres', 'inventaire') THEN 'open-library' WHEN source IN ('local', 'google-books', 'open-library', 'fantlab', 'gutendex', 'hardcover', 'demo') THEN source ELSE 'local' END,
-          cover_source = CASE WHEN cover_source IN ('edition', 'isbn', 'google-books', 'inventaire', 'same-language-edition', 'work', 'manual', 'none') THEN cover_source ELSE 'none' END,
+          source = CASE WHEN source IN ('local', 'google-books', 'open-library', 'fantlab', 'gutendex', 'hardcover') THEN source ELSE 'local' END,
+          cover_source = CASE WHEN cover_source IN ('edition', 'isbn', 'google-books', 'same-language-edition', 'work', 'manual', 'none') THEN cover_source ELSE 'none' END,
           cover_status = CASE WHEN cover_status IN ('local', 'remote', 'fallback', 'missing', 'download-failed') THEN cover_status ELSE CASE WHEN NULLIF(cover_url, '') IS NULL THEN 'missing' ELSE 'remote' END END,
           created_at = COALESCE(created_at, CURRENT_TIMESTAMP),
           updated_at = COALESCE(updated_at, CURRENT_TIMESTAMP);
@@ -339,7 +339,6 @@ function toStatus(value: string | null): ReadingStatus {
 }
 
 function toSource(value: string | null): BookSource {
-  if (value === "litres" || value === "inventaire") return "open-library";
   return value && VALID_SOURCES.has(value as BookSource) ? value as BookSource : "local";
 }
 

@@ -69,10 +69,7 @@ function readSettings(): StoredSettings {
   if (cached) return cached;
 
   try {
-    const parsed = JSON.parse(fs.readFileSync(settingsPath(), "utf8")) as Partial<StoredSettings> & {
-      inventaireEnabled?: boolean;
-      litresEnabled?: boolean;
-    };
+    const parsed = JSON.parse(fs.readFileSync(settingsPath(), "utf8")) as Partial<StoredSettings>;
     cached = {
       ...DEFAULTS,
       ...parsed,

@@ -413,7 +413,7 @@ function CoverImageLoad({
           setImageLoading(true);
         }
       })
-      .catch(() => { /* placeholder until cache succeeds */ });
+      .catch(() => {});
     return () => { cancelled = true; };
   }, [currentSrc]);
 

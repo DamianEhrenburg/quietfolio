@@ -34,10 +34,7 @@ export const enMessages: Messages = {
     "open-library": "Open Library",
     fantlab: "FantLab",
     gutendex: "Gutenberg",
-    hardcover: "Hardcover",
-    inventaire: "Open Library",
-    litres: "Open Library",
-    demo: "Demo"
+    hardcover: "Hardcover"
   },
   searchMode: {
     auto: "Auto",

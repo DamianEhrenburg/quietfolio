@@ -18,7 +18,6 @@
     "reading-list",
     "electron"
   ],
-  "private": true,
   "main": "dist-electron/main.js",
   "type": "module",
   "scripts": {
