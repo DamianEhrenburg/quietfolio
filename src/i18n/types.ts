@@ -252,6 +252,10 @@ export interface Messages {
     resolvedAs: (mode: string, confidence: number) => string;
     booksByAuthor: (name: string) => string;
     wrongAuthor: string;
+    searchHistory: string;
+    repeatSearch: (query: string) => string;
+    removeSearchHistory: (query: string) => string;
+    clearSearchHistory: string;
     noResults: string;
     noResultsHint: string;
     bestMatch: string;

@@ -93,6 +93,8 @@ import type { UiLocale } from "../shared/types";
 const HOME_RECENT_BOOKS_LIMIT = 7;
 const ONLINE_RESULTS_PAGE_SIZE = 10;
 const ONLINE_SEARCH_DEBOUNCE_MS = 350;
+const DISCOVER_SEARCH_HISTORY_KEY = "quietfolio.discoverSearchHistory";
+const DISCOVER_SEARCH_HISTORY_LIMIT = 8;
 
 interface PrefetchedOnlineSearch {
   query: string;
@@ -102,11 +104,75 @@ interface PrefetchedOnlineSearch {
   ready: boolean;
 }
 
+interface DiscoverSearchHistoryItem {
+  query: string;
+  mode: OnlineSearchMode;
+  savedAt: number;
+}
+
 function onlineSearchMinLength(searchMode: OnlineSearchMode, query: string): number {
   if (searchMode === "isbn") return 10;
   const compact = query.replace(/[\s-]/g, "");
   if (/^\d{10,13}$/.test(compact)) return 10;
   return 2;
+}
+
+function readDiscoverSearchHistory(): DiscoverSearchHistoryItem[] {
+  if (typeof window === "undefined") return [];
+  try {
+    const raw = window.localStorage.getItem(DISCOVER_SEARCH_HISTORY_KEY);
+    const items = raw ? JSON.parse(raw) : [];
+    if (!Array.isArray(items)) return [];
+    return items
+      .filter((item): item is DiscoverSearchHistoryItem =>
+        item
+        && typeof item.query === "string"
+        && ["auto", "author", "title", "isbn"].includes(item.mode)
+        && typeof item.savedAt === "number"
+      )
+      .slice(0, DISCOVER_SEARCH_HISTORY_LIMIT);
+  } catch {
+    return [];
+  }
+}
+
+function writeDiscoverSearchHistory(items: DiscoverSearchHistoryItem[]) {
+  try {
+    window.localStorage.setItem(DISCOVER_SEARCH_HISTORY_KEY, JSON.stringify(items));
+  } catch {
+    // Best-effort UI memory only.
+  }
+}
+
+function rememberDiscoverSearch(
+  history: DiscoverSearchHistoryItem[],
+  query: string,
+  mode: OnlineSearchMode
+): DiscoverSearchHistoryItem[] {
+  const trimmed = query.trim();
+  if (!trimmed) return history;
+  const key = `${mode}:${trimmed.toLocaleLowerCase()}`;
+  const next = [
+    { query: trimmed, mode, savedAt: Date.now() },
+    ...history.filter((item) => `${item.mode}:${item.query.toLocaleLowerCase()}` !== key)
+  ].slice(0, DISCOVER_SEARCH_HISTORY_LIMIT);
+  writeDiscoverSearchHistory(next);
+  return next;
+}
+
+function historyModeFromResponse(response: OnlineSearchResponse, fallback: OnlineSearchMode): OnlineSearchMode {
+  const mode = response.resolution.resolvedMode;
+  return mode === "author" || mode === "title" || mode === "isbn" ? mode : fallback;
+}
+
+function historyQueryFromResponse(response: OnlineSearchResponse): string {
+  if (!response.results.length || response.resolution.confidence < 70 || response.resolution.source === "literal") return "";
+  if (response.resolution.resolvedMode === "author") {
+    return response.resolution.authorName || response.resolution.canonicalQuery || response.resolution.displayLabel;
+  }
+  if (response.resolution.resolvedMode === "isbn") return response.resolution.canonicalQuery;
+  const best = response.results[0];
+  return best.displayTitle || best.title || response.resolution.canonicalQuery;
 }
 
 type OnlineResultSort = "relevance" | "year_desc" | "year_asc" | "popularity" | "title";
@@ -1343,6 +1409,7 @@ function AppShell({
   const [onlineState, setOnlineState] = useState<"idle" | "loading" | "success" | "error">("idle");
   const [onlineResponse, setOnlineResponse] = useState<OnlineSearchResponse | null>(null);
   const [onlineError, setOnlineError] = useState("");
+  const [onlineSearchHistory, setOnlineSearchHistory] = useState<DiscoverSearchHistoryItem[]>(() => readDiscoverSearchHistory());
   const [previewLoadingId, setPreviewLoadingId] = useState<string | null>(null);
   const [editionPreview, setEditionPreview] = useState<OnlineBookPreview | null>(null);
   const [loadingMoreEditions, setLoadingMoreEditions] = useState(false);
@@ -1736,6 +1803,9 @@ function AppShell({
           const searchGeneration = ++onlineSearchGenerationRef.current;
           setOnlineError("");
           setOnlineVisibleCount(ONLINE_RESULTS_PAGE_SIZE);
+          setOnlineSearchHistory((history) =>
+            rememberDiscoverSearch(history, historyQueryFromResponse(response), historyModeFromResponse(response, searchMode))
+          );
           publishOnlineResponse(response);
           enrichOnlineSearchCovers(response, trimmed, searchGeneration);
         }
@@ -1770,6 +1840,9 @@ function AppShell({
 
     const applyResponse = (response: OnlineSearchResponse) => {
       if (generation !== onlineSearchGenerationRef.current) return;
+      setOnlineSearchHistory((history) =>
+        rememberDiscoverSearch(history, historyQueryFromResponse(response), historyModeFromResponse(response, searchMode))
+      );
       publishOnlineResponse(response);
       enrichOnlineSearchCovers(response, trimmed, generation);
     };
@@ -1947,6 +2020,28 @@ function AppShell({
     setOnlineResponse(null);
     setOnlineState("idle");
     setOnlineError("");
+  }
+
+  async function handleOnlineHistoryPick(item: DiscoverSearchHistoryItem) {
+    setOnlineQuery(item.query);
+    setOnlineSearchMode(item.mode);
+    setOnlineVisibleCount(ONLINE_RESULTS_PAGE_SIZE);
+    cancelOnlineSearchDebounce();
+    resetOnlinePrefetch();
+    await commitOnlineSearch(item.query, item.mode);
+  }
+
+  function handleRemoveOnlineHistory(item: DiscoverSearchHistoryItem) {
+    setOnlineSearchHistory((history) => {
+      const next = history.filter((entry) => entry.query !== item.query || entry.mode !== item.mode);
+      writeDiscoverSearchHistory(next);
+      return next;
+    });
+  }
+
+  function handleClearOnlineHistory() {
+    writeDiscoverSearchHistory([]);
+    setOnlineSearchHistory([]);
   }
 
   async function handleLoadMoreEditions() {
@@ -2382,6 +2477,27 @@ function AppShell({
               <div className="search-mode-switch" role="tablist" aria-label={m.online.mode}>{( ["auto", "author", "title", "isbn"] as OnlineSearchMode[]).map((searchMode) => <button key={searchMode} type="button" role="tab" aria-selected={onlineSearchMode === searchMode} className={onlineSearchMode === searchMode ? "selected" : ""} onClick={() => handleOnlineSearchModeChange(searchMode)}>{m.searchMode[searchMode]}</button>)}</div>
             </div>
           </div>
+          {onlineSearchHistory.length > 0 && (
+            <div className="discover-history" aria-label={m.online.searchHistory}>
+              <span>{m.online.searchHistory}</span>
+              <div>
+                {onlineSearchHistory.map((item) => (
+                  <span
+                    key={`${item.mode}:${item.query}`}
+                    className="discover-history-chip"
+                  >
+                    <button type="button" onClick={() => void handleOnlineHistoryPick(item)} title={m.online.repeatSearch(item.query)}>
+                      {item.query}
+                    </button>
+                    <button type="button" className="discover-history-remove" onClick={() => handleRemoveOnlineHistory(item)} title={m.online.removeSearchHistory(item.query)} aria-label={m.online.removeSearchHistory(item.query)}>
+                      <X size={13} />
+                    </button>
+                  </span>
+                ))}
+                <button type="button" className="discover-history-clear" onClick={handleClearOnlineHistory}>{m.online.clearSearchHistory}</button>
+              </div>
+            </div>
+          )}
           {showOnlineIdle && <div className="online-start compact"><img className="online-start-mark subtle" src={brandIcon} width={54} height={54} alt="" draggable={false} /><h2>{m.online.idleTitle}</h2><p>{m.online.idleHint}</p></div>}
           {showOnlineSkeleton && <>
             <div className="resolution-strip loading"><LoaderCircle className="spin-icon" size={16} /><span>{m.online.resolving}</span></div>

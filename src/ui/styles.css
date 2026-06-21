@@ -5182,6 +5182,92 @@ select:focus-visible {
   box-shadow: 0 6px 18px rgba(88, 78, 178, 0.28);
 }
 
+.discover-history {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  margin: -4px 0 16px;
+  color: var(--text-2);
+  font-size: 12px;
+}
+
+.discover-history > span {
+  color: #8e9aab;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.discover-history > div {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  min-width: 0;
+}
+
+.discover-history-chip {
+  display: inline-flex;
+  align-items: center;
+  max-width: 220px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.035);
+  color: #d7dded;
+  transition: 150ms ease;
+}
+
+.discover-history-chip > button {
+  min-width: 0;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  font-weight: 650;
+  cursor: pointer;
+}
+
+.discover-history-chip > button:first-child {
+  overflow: hidden;
+  padding: 6px 5px 6px 10px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.discover-history-remove {
+  display: grid;
+  place-items: center;
+  width: 24px;
+  height: 26px;
+  padding: 0;
+  opacity: 0.58;
+}
+
+.discover-history-chip:hover {
+  border-color: rgba(118, 104, 216, 0.45);
+  background: rgba(118, 104, 216, 0.14);
+  color: #f4f1ff;
+}
+
+.discover-history-remove:hover {
+  opacity: 1;
+}
+
+.discover-history-clear {
+  align-self: center;
+  border: 0;
+  background: transparent;
+  color: #8e9aab;
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.discover-history-clear:hover {
+  color: #f4f1ff;
+}
+
 .online-compact-copy .eyebrow {
   margin-bottom: 6px;
 }
