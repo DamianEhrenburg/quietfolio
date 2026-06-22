@@ -90,7 +90,7 @@ import {
 import { LanguageWelcome } from "./LanguageWelcome";
 import type { UiLocale } from "../shared/types";
 
-const HOME_RECENT_BOOKS_LIMIT = 7;
+const HOME_RECENT_BOOKS_LIMIT = 8;
 const ONLINE_RESULTS_PAGE_SIZE = 10;
 const ONLINE_SEARCH_DEBOUNCE_MS = 350;
 const DISCOVER_SEARCH_HISTORY_KEY = "quietfolio.discoverSearchHistory";
@@ -2384,7 +2384,7 @@ function AppShell({
                     <button type="button" className="table-row-select" onClick={() => selectLibraryBook(book.id)}>
                       <span>{book.displayTitle}</span>
                       <span>{authorLabel(m, book.author)}</span>
-                      <span>{book.year ?? m.common.notSpecified}</span>
+                      <span title={book.year ? String(book.year) : m.common.notSpecified}>{book.year ?? "—"}</span>
                     </button>
                     <div className="table-row-status">
                       <StatusSwitcher

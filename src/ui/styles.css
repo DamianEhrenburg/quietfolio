@@ -4400,7 +4400,7 @@ select:focus-visible {
 
 .recent-scroll {
   display: grid;
-  grid-template-columns: repeat(7, minmax(0, 1fr));
+  grid-template-columns: repeat(8, minmax(0, 1fr));
   gap: 12px;
   margin-top: 18px;
   padding: 4px 0 8px;
@@ -5930,6 +5930,25 @@ select:focus-visible {
   grid-template-columns: minmax(0, 2fr) minmax(0, 1.4fr) 72px 176px minmax(148px, 1fr);
 }
 
+.table-row-status .status-switcher.icons-only.compact {
+  display: grid;
+  grid-template-columns: repeat(5, 28px);
+  width: max-content;
+}
+
+.table-row-status .status-switcher.icons-only.compact button {
+  width: 28px;
+  min-height: 28px;
+}
+
+.table-row-rating {
+  justify-content: flex-start;
+}
+
+.table-row-rating .rating-stars {
+  justify-content: flex-start;
+}
+
 .language-welcome {
   position: fixed;
   inset: 0;
@@ -6039,20 +6058,20 @@ select:focus-visible {
 .language-locale-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 14px;
+  gap: 12px;
 }
 
 .language-locale-tile {
   position: relative;
   display: grid;
   grid-template-columns: 1fr auto;
-  gap: 16px;
+  gap: 10px;
   align-items: center;
-  min-height: 104px;
-  padding: 22px 24px;
+  min-height: 82px;
+  padding: 16px 20px;
   text-align: center;
   border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 18px;
+  border-radius: 15px;
   background: rgba(255, 255, 255, 0.02);
   cursor: pointer;
   transition:
@@ -6094,7 +6113,7 @@ select:focus-visible {
 
 .language-locale-copy strong {
   display: block;
-  font-size: 20px;
+  font-size: 18px;
 }
 
 .language-locale-check {
