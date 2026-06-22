@@ -3,6 +3,7 @@ import {
   AlertTriangle,
   ArrowLeft,
   ArrowRight,
+  BookmarkPlus,
   BookCopy,
   BookMarked,
   BookOpen,
@@ -44,7 +45,7 @@ import {
   HardDrive,
   X
 } from "lucide-react";
-import { BrandIcon, brandIcon } from "../shared/brand";
+import { BrandIcon, brandIcon, brandMark } from "../shared/brand";
 import type {
   AppSettings,
   AppSettingsUpdate,
@@ -178,7 +179,7 @@ function historyQueryFromResponse(response: OnlineSearchResponse): string {
 type OnlineResultSort = "relevance" | "year_desc" | "year_asc" | "popularity" | "title";
 
 const readingStatusOptions = [
-  { value: "want" as const, Icon: Sparkles },
+  { value: "want" as const, Icon: BookmarkPlus },
   { value: "reading" as const, Icon: BookMarked },
   { value: "read" as const, Icon: CircleCheck },
   { value: "paused" as const, Icon: Clock3 },
@@ -1473,7 +1474,7 @@ function AppShell({
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
-      if ((event.ctrlKey || event.metaKey) && event.key.toLocaleLowerCase("en") === "k") {
+      if ((event.ctrlKey || event.metaKey) && (event.code === "KeyK" || event.key.toLocaleLowerCase("en") === "k")) {
         event.preventDefault();
         setCommandOpen((current) => !current);
         return;
@@ -2232,13 +2233,13 @@ function AppShell({
           {mode === "home" && <>
             <button className="nav-item active"><House size={19} /><span className="nav-item-label">{m.nav.today}</span></button>
             <button className="nav-item" onClick={openLibraryRecent}><Clock3 size={19} /><span className="nav-item-label">{m.nav.recentlyAdded}</span></button>
-            <button className="nav-item" onClick={() => enterOnlineMode()}><Sparkles size={19} /><span className="nav-item-label">{m.nav.findNewBook}</span></button>
+            <button className="nav-item" onClick={() => enterOnlineMode()}><Compass size={19} /><span className="nav-item-label">{m.nav.findNewBook}</span></button>
           </>}
           {mode === "library" && <>
             <button className={libraryFilter === "all" ? "nav-item active" : "nav-item"} onClick={() => { setLibrarySort("title"); setLibraryFilter("all"); }}><LibraryBig size={19} /><span className="nav-item-label">{m.nav.allBooks}</span><span className="nav-item-count">{stats.total}</span></button>
             <button className={libraryFilter === "favorites" ? "nav-item active nav-favorites" : "nav-item nav-favorites"} onClick={openLibraryFavorites}><Star size={19} /><span className="nav-item-label">{m.nav.favorites}</span><span className="nav-item-count">{stats.favorites}</span></button>
             <button className={libraryFilter === "reading" ? "nav-item active nav-reading" : "nav-item nav-reading"} onClick={() => { setLibrarySort("title"); setLibraryFilter("reading"); }}><BookMarked size={19} /><span className="nav-item-label">{m.status.reading}</span><span className="nav-item-count">{stats.reading}</span></button>
-            <button className={libraryFilter === "want" ? "nav-item active nav-want" : "nav-item nav-want"} onClick={() => { setLibrarySort("title"); setLibraryFilter("want"); }}><Sparkles size={19} /><span className="nav-item-label">{m.status.want}</span><span className="nav-item-count">{stats.want}</span></button>
+            <button className={libraryFilter === "want" ? "nav-item active nav-want" : "nav-item nav-want"} onClick={() => { setLibrarySort("title"); setLibraryFilter("want"); }}><BookmarkPlus size={19} /><span className="nav-item-label">{m.status.want}</span><span className="nav-item-count">{stats.want}</span></button>
             <button className={libraryFilter === "read" ? "nav-item active nav-read" : "nav-item nav-read"} onClick={() => { setLibrarySort("title"); setLibraryFilter("read"); }}><CircleCheck size={19} /><span className="nav-item-label">{m.status.read}</span><span className="nav-item-count">{stats.read}</span></button>
             <button className={libraryFilter === "paused" ? "nav-item active nav-paused" : "nav-item nav-paused"} onClick={() => { setLibrarySort("title"); setLibraryFilter("paused"); }}><Clock3 size={19} /><span className="nav-item-label">{m.status.paused}</span><span className="nav-item-count">{stats.paused}</span></button>
             <button className={libraryFilter === "abandoned" ? "nav-item active nav-abandoned" : "nav-item nav-abandoned"} onClick={() => { setLibrarySort("title"); setLibraryFilter("abandoned"); }}><CircleX size={19} /><span className="nav-item-label">{m.status.abandoned}</span><span className="nav-item-count">{stats.abandoned}</span></button>
@@ -2492,7 +2493,7 @@ function AppShell({
               </div>
             </div>
           )}
-          {showOnlineIdle && <div className="online-start compact"><img className="online-start-mark subtle" src={brandIcon} width={54} height={54} alt="" draggable={false} /><h2>{m.online.idleTitle}</h2><p>{m.online.idleHint}</p></div>}
+          {showOnlineIdle && <div className="online-start compact"><img className="online-start-mark subtle" src={brandMark} width={54} height={54} alt="" draggable={false} /><h2>{m.online.idleTitle}</h2><p>{m.online.idleHint}</p></div>}
           {showOnlineSkeleton && <>
             <div className="resolution-strip loading"><LoaderCircle className="spin-icon" size={16} /><span>{m.online.resolving}</span></div>
             <OnlineResultsSkeleton />
@@ -2550,7 +2551,7 @@ function AppShell({
                 ))}
               </div>
             )}
-            {!onlineResponse?.results.length ? <div className="online-start"><img className="online-start-mark" src={brandIcon} width={64} height={64} alt="" draggable={false} /><h2>{m.online.noResults}</h2><p>{m.online.noResultsHint}</p></div>
+            {!onlineResponse?.results.length ? <div className="online-start"><img className="online-start-mark" src={brandMark} width={64} height={64} alt="" draggable={false} /><h2>{m.online.noResults}</h2><p>{m.online.noResultsHint}</p></div>
             : <div className="work-results">{visibleOnlineResults.map((result, index) => {
               const quickAdd = shouldOfferQuickAdd(result, onlineResponse.resolution.resolvedMode, settings.autoSelectHighConfidence);
               const isFeatured = index === 0 && quickAdd;
